@@ -60,4 +60,9 @@ void read_voltage(void)
   float vbat = (analogRead(VBAT) * 5.0) / 1023.0;
   float vsol = (analogRead(VSOL) * 5.0) / 1023.0;
   Serial.print("VBAT: ");
+  Serial.print(vbat);
+  Serial.print(" V, ");
+  Serial.print(" V, VSOL: ");
+  Serial.print(vsol);
+  Serial.println(" V");
 }
