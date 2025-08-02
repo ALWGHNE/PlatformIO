@@ -61,13 +61,13 @@ void loop() {
 void set_duty_cycle(int dutyCycle) {
   if (dutyCycle <= ((MAX_DUTY / 2) - DT)) {
     // Serial.println("If condition true.");
-    OCR1A = dutyCycle - DT;
-    OCR1B = dutyCycle + DT;
+    OCR1B = dutyCycle - DT;
+    OCR1A = dutyCycle + DT;
   } else {
     // Serial.println("Else statement executed.");
-    OCR1A = dutyCycle - DT;
+    OCR1B = dutyCycle - DT;
     // OCR1B = MAX_DUTY - (dutyCycle + DT);
-    OCR1B = dutyCycle + DT;
+    OCR1A = dutyCycle + DT;
   }
 }
 
@@ -96,8 +96,8 @@ void read_voltage(void) {
 }
 
 void configure_PWM(void) {
-  TCCR1A |= _BV(COM1A1) | _BV(COM1B0) | _BV(COM1B1);
-  TCCR1A &= ~(_BV(WGM11)) & ~(_BV(WGM10)) & ~(_BV(COM1A0));
+  TCCR1A |= _BV(COM1A1) | _BV(COM1A0) | _BV(COM1B1);
+  TCCR1A &= ~(_BV(WGM11)) & ~(_BV(WGM10)) & ~(_BV(COM1B0));
   TCCR1B |= _BV(WGM13) | _BV(CS10);
   TCCR1B &= ~(_BV(WGM12)) & ~(_BV(CS12)) & ~(_BV(CS11));
   ICR1 = MAX_DUTY;
