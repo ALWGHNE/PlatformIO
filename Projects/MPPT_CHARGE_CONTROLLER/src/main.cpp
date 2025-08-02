@@ -4,8 +4,11 @@
 #define DT 2
 #define VBAT  A2
 #define VSOL  A7
-#define ERR_VALUE 1
+#define ERR_VALUE 1.022857
 #define R_RATIO 11  //(R1+R2)/R2
+
+float vbat = 0;
+float vsol = 0;
 
 void set_duty_cycle(int dutyCycle);
 void read_voltage(void);
@@ -27,10 +30,12 @@ void setup()
 
 void loop()
 {
+  read_voltage();
     for(int i = 10; i<= 90; i+=1) {
     set_duty_cycle(i);
     delay(10);
   }
+
   delay(100);
     for(int i = 90; i>= 10; i-=1) {
     set_duty_cycle(i);
@@ -57,17 +62,22 @@ void set_duty_cycle(int dutyCycle)
 void read_voltage(void)
 {
   //read voltage.
-  analogRead(VBAT);
-  analogRead(VSOL);
-  float vbat = (analogRead(VBAT) * 5.0) / 1023.0;
-  float vsol = (analogRead(VSOL) * 5.0) / 1023.0;
-  vbat = vbat * R_RATIO * ERR_VALUE;
-  vsol = vsol * R_RATIO * ERR_VALUE;
+  float iteration = 50.0;
+  vbat = 0;
+  for(int i = 0; i < iteration; i++)
+  {
+    vbat += analogRead(VBAT);
+  }
+  vbat = vbat/iteration;
+  vbat = (vbat * 5.37) / 1023.0;  //the peak voltage on the arduino nano is not 5.0, its 5.37 instead.
+  // float vsol = (analogRead(VSOL) * 5.32) / 1023.0;
+  vbat = vbat * R_RATIO * ERR_VALUE;  //the error value is used to compensate for the tolerance of the resistors used.
+  // vsol = vsol * R_RATIO * ERR_VALUE;
 
   Serial.print("VBAT: ");
   Serial.print(vbat);
   Serial.println("V");
-  Serial.print("VSOL: ");
-  Serial.print(vsol);
-  Serial.println("V");
+  // Serial.print("VSOL: ");
+  // Serial.print(vsol);
+  // Serial.println("V");
 }
