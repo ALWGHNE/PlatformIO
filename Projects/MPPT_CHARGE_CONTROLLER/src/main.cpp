@@ -4,6 +4,8 @@
 #define DT 2
 #define VBAT  A2
 #define VSOL  A7
+#define ERR_VALUE 1
+#define R_RATIO 11  //(R1+R2)/R2
 
 void set_duty_cycle(int dutyCycle);
 void read_voltage(void);
@@ -59,10 +61,13 @@ void read_voltage(void)
   analogRead(VSOL);
   float vbat = (analogRead(VBAT) * 5.0) / 1023.0;
   float vsol = (analogRead(VSOL) * 5.0) / 1023.0;
+  vbat = vbat * R_RATIO * ERR_VALUE;
+  vsol = vsol * R_RATIO * ERR_VALUE;
+
   Serial.print("VBAT: ");
   Serial.print(vbat);
-  Serial.print(" V, ");
-  Serial.print(" V, VSOL: ");
+  Serial.println("V");
+  Serial.print("VSOL: ");
   Serial.print(vsol);
-  Serial.println(" V");
+  Serial.println("V");
 }
