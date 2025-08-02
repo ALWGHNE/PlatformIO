@@ -6,6 +6,7 @@
 #define VSOL  A7
 
 void set_duty_cycle(int dutyCycle);
+void read_voltage(void);
 void setup()
 {
   Serial.begin(9600);
@@ -49,4 +50,9 @@ void set_duty_cycle(int dutyCycle)
     // OCR1B = MAX_DUTY - (dutyCycle + DT);
     OCR1B = dutyCycle + DT;
   }
+}
+
+void read_voltage(void)
+{
+  //read voltage.
 }
