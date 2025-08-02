@@ -55,4 +55,9 @@ void set_duty_cycle(int dutyCycle)
 void read_voltage(void)
 {
   //read voltage.
+  analogRead(VBAT);
+  analogRead(VSOL);
+  float vbat = (analogRead(VBAT) * 5.0) / 1023.0;
+  float vsol = (analogRead(VSOL) * 5.0) / 1023.0;
+  Serial.print("VBAT: ");
 }
